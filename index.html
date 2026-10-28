@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pet Train Coupe Kit</title>
+<meta name="description" content="Free tool by into.dog.travel: fill in your trip once and get your DRM coupe request letter and Emergency Quota application as ready-to-print PDFs, for travelling with your dog in First AC on Indian Railways.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: yellow hook band on top, then a two-column workspace — numbered form steps on the left, a sticky "ticket stub" + documents panel on the right; stacks to one column on phones. */
+:root{
+  --bg:#FAFAF7; --surface:#FFFFFF; --ink:#17140F; --muted:#5E5A52; --line:#DEDBD2;
+  --yellow:#FFD23F; --on-yellow:#17140F; --red:#E5372B; --red-ink:#C22A1F;
+  --ok:#1E7A46; --warn-bg:#FFF1C2; --warn-ink:#5A4300; --paper:#FFFFFF; --field:#FFFFFF;
+  --display:"Bricolage Grotesque", "Arial Black", system-ui, sans-serif;
+  --body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#13110E; --surface:#1D1A16; --ink:#F3F0E8; --muted:#A8A296; --line:#36322B;
+    --yellow:#FFD23F; --on-yellow:#17140F; --red:#FF5A4A; --red-ink:#FF7A6C;
+    --ok:#5FD08F; --warn-bg:#3A3110; --warn-ink:#FFE08A; --paper:#FFFFFF; --field:#16130F;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#13110E; --surface:#1D1A16; --ink:#F3F0E8; --muted:#A8A296; --line:#36322B;
+  --yellow:#FFD23F; --on-yellow:#17140F; --red:#FF5A4A; --red-ink:#FF7A6C;
+  --ok:#5FD08F; --warn-bg:#3A3110; --warn-ink:#FFE08A; --paper:#FFFFFF; --field:#16130F;
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--body);
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+img{max-width:100%}
+[hidden]{display:none!important}
+a{color:var(--red-ink)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* Hook band */
+.band{background:var(--yellow);color:var(--on-yellow);border-bottom:3px solid var(--on-yellow)}
+.band .wrap{padding-block:28px 30px;display:grid;gap:14px}
+.by{font:700 13px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.by a{color:var(--on-yellow)}
+.tag{background:var(--on-yellow);color:var(--yellow);padding:5px 8px;border-radius:3px}
+h1{font:800 clamp(34px,6.4vw,64px)/.95 var(--display);letter-spacing:-.02em;margin:0;text-wrap:balance;max-width:16ch}
+h1 em{font-style:normal;color:var(--red)}
+.lede{font-size:clamp(16px,2vw,19px);max-width:60ch;margin:0;font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.chip{border:2px solid var(--on-yellow);border-radius:99px;padding:4px 12px;font-weight:600;font-size:14px;background:rgba(255,255,255,.35)}
+
+/* Workspace */
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:32px;padding-block:32px 56px;align-items:start}
+@media (max-width:920px){.grid{grid-template-columns:minmax(0,1fr)}}
+form{display:grid;gap:22px;min-width:0}
+fieldset{border:1px solid var(--line);background:var(--surface);border-radius:10px;margin:0;padding:22px 20px 22px;display:grid;gap:16px;min-width:0}
+legend{display:contents}
+.stephead{display:flex;gap:14px;align-items:baseline}
+.num{font:800 30px/1 var(--display);color:var(--red);min-width:26px}
+.stephead h2{font:800 22px/1.15 var(--display);margin:0;letter-spacing:-.01em}
+.stephead p{margin:4px 0 0;color:var(--muted);font-size:14.5px}
+.row{display:grid;gap:14px;align-items:start;grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.f{display:grid;gap:6px;min-width:0}
+label,.lbl{font-weight:600;font-size:14px}
+.hint{font-size:13px;color:var(--muted);font-weight:400}
+input[type=text],input[type=tel],input[type=email],input[type=date],input[type=time],input[type=number],select,textarea{
+  width:100%;font:500 16px/1.3 var(--body);color:var(--ink);background:var(--field);
+  border:1.5px solid var(--line);border-radius:7px;padding:11px 12px;min-width:0}
+textarea{min-height:84px;resize:vertical;line-height:1.45}
+input.mono{font-family:var(--mono);letter-spacing:.04em}
+input:focus,select:focus,textarea:focus{outline:3px solid var(--yellow);outline-offset:1px;border-color:var(--ink)}
+input[aria-invalid=true]{border-color:var(--red)}
+.check{display:flex;gap:10px;align-items:flex-start;font-weight:500;font-size:15px}
+.check input{width:20px;height:20px;margin:2px 0 0;accent-color:var(--red);flex:none}
+.seg{display:flex;gap:8px;flex-wrap:wrap}
+.seg label{border:1.5px solid var(--line);border-radius:7px;padding:10px 14px;cursor:pointer;display:flex;gap:8px;align-items:center;font-weight:600;background:var(--field)}
+.seg input{accent-color:var(--red)}
+.seg label:has(input:checked){border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+
+.pax{display:grid;gap:10px}
+.paxrow{display:grid;grid-template-columns:minmax(0,1fr) 84px 110px 40px;gap:8px;align-items:end}
+@media (max-width:520px){.paxrow{grid-template-columns:minmax(0,1fr) 70px 92px 36px}}
+.icon-btn{height:44px;border:1.5px solid var(--line);background:var(--field);color:var(--muted);border-radius:7px;cursor:pointer;font-size:20px;line-height:1}
+.icon-btn:hover{color:var(--red-ink);border-color:var(--red-ink)}
+.link-btn{background:none;border:0;padding:0;color:var(--red-ink);font:600 15px var(--body);cursor:pointer;justify-self:start;text-decoration:underline;text-underline-offset:3px}
+
+details{border-top:1px dashed var(--line);padding-top:12px}
+summary{cursor:pointer;font-weight:600}
+details > div{display:grid;gap:14px;margin-top:14px}
+
+.attach{margin:0;padding-left:20px;display:grid;gap:6px}
+.upl{display:grid;gap:10px}
+.uprow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;border:1.5px dashed var(--line);border-radius:8px;padding:10px 12px}
+.uprow .t{font-weight:600;font-size:15px}
+.uprow .files{font-size:13px;color:var(--muted);overflow-wrap:anywhere}
+.uprow .files.has{color:var(--ok);font-weight:600}
+.pick{position:relative;overflow:hidden;border:1.5px solid var(--ink);border-radius:7px;padding:8px 12px;font-weight:700;font-size:14px;cursor:pointer;background:var(--field);white-space:nowrap}
+.pick input{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+.sigbox{display:grid;gap:8px}
+canvas#sig{width:100%;height:150px;background:var(--paper);border:1.5px solid var(--line);border-radius:8px;touch-action:none;cursor:crosshair;display:block}
+.sigtools{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+
+/* Side panel */
+aside{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);display:grid;gap:16px;min-width:0}
+@media (max-width:920px){aside{position:static}}
+.stub{background:var(--surface);border:2px solid var(--ink);border-radius:10px;overflow:hidden}
+.stub-top{background:var(--ink);color:var(--bg);padding:10px 16px;display:flex;justify-content:space-between;font:700 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.stub-body{padding:16px;display:grid;gap:12px}
+.route{display:flex;align-items:center;gap:10px;font:800 26px/1 var(--display)}
+.route .arrow{color:var(--red);font-size:22px}
+.route span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.meta div{min-width:0}
+.meta small{display:block;font:700 11px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.meta b{font:700 15px/1.3 var(--mono);overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.perf{border-top:2px dashed var(--line);margin:0 -16px}
+.dl{display:grid;gap:10px}
+.deadline{border-radius:8px;padding:12px 14px;background:var(--warn-bg);color:var(--warn-ink);font-size:14.5px;line-height:1.45}
+.deadline strong{display:block;font-size:15.5px}
+.deadline.late{background:var(--red);color:#fff}
+
+.btn{appearance:none;border:2px solid var(--on-yellow);background:var(--yellow);color:var(--on-yellow);font:800 17px/1.1 var(--display);padding:14px 16px;border-radius:9px;cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:10px;box-shadow:3px 3px 0 var(--ink);transition:transform .08s, box-shadow .08s}
+.btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.btn small{font:600 12px/1.2 var(--body);display:block;margin-top:3px}
+.btn.secondary{background:var(--surface);color:var(--ink);border-color:var(--ink)}
+.btn[disabled]{opacity:.55;cursor:progress}
+.status{font-size:14px;min-height:1.2em}
+.status.err{color:var(--red-ink);font-weight:600}
+.status.ok{color:var(--ok);font-weight:600}
+.missing{margin:6px 0 0;padding-left:18px}
+
+.emailcard{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:10px}
+.emailcard h3{margin:0;font:800 18px/1.2 var(--display)}
+.copyrow{display:flex;gap:8px;flex-wrap:wrap}
+.small-btn{border:1.5px solid var(--ink);background:var(--field);color:var(--ink);border-radius:7px;padding:8px 12px;font:700 14px var(--body);cursor:pointer;text-decoration:none;display:inline-block}
+.emailcard pre{white-space:pre-wrap;font:400 13.5px/1.5 var(--body);margin:0;max-height:240px;overflow:auto;background:var(--bg);border-radius:6px;padding:10px;border:1px solid var(--line)}
+.addr{font:600 14px var(--mono);overflow-wrap:anywhere}
+
+.tips{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.tips h3{margin:0 0 8px;font:800 18px/1.2 var(--display)}
+.tips ol{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14.5px}
+.private{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--muted)}
+.private b{color:var(--ink)}
+.toolbar{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+footer{border-top:1px solid var(--line)}
+footer .wrap{padding-block:22px 34px;font-size:13.5px;color:var(--muted);display:grid;gap:6px}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.btn{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="band">
+  <div class="wrap">
+    <div class="by"><span class="tag">Free tool</span><a href="https://www.instagram.com/into.dog.travel/" target="_blank" rel="noopener">@into.dog.travel</a><span>· tested by Boggi</span></div>
+    <h1>Your dog's <em>First AC coupe</em> paperwork, filled in for you.</h1>
+    <p class="lede">Answer a few questions about your trip. You get the DRM coupe request letter and the Emergency Quota application as ready-to-print PDFs, plus the email to send.</p>
+    <div class="chips"><span class="chip">DRM coupe request</span><span class="chip">Emergency Quota form</span><span class="chip">Email to the DRM</span></div>
+  </div>
+</header>
+
+<main class="wrap grid">
+  <form id="kit" novalidate>
+    <div class="toolbar">
+      <div class="private"><span aria-hidden="true">🔒</span><span><b>We don't collect anything.</b> Nothing you type is saved or sent anywhere. The PDFs are made right here in your browser.</span></div>
+      <button type="button" class="link-btn" id="sampleBtn">Try with sample details</button>
+    </div>
+
+    <fieldset>
+      <legend><div class="stephead"><span class="num">1</span><div><h2>About you</h2><p>The person applying. This goes on top of the letter and on the form.</p></div></div></legend>
+      <div class="row">
+        <div class="f"><label for="name">Full name</label><input type="text" id="name" autocomplete="name" placeholder="As on your ticket"></div>
+        <div class="f"><label for="mobile">Mobile</label><input type="tel" id="mobile" class="mono" inputmode="numeric" autocomplete="tel-national" placeholder="10 digits" maxlength="14"></div>
+      </div>
+      <div class="f"><label for="email">Email</label><input type="email" id="email" autocomplete="email" placeholder="The DRM office replies here"></div>
+      <div class="f"><label for="address">Address</label><textarea id="address" autocomplete="street-address" placeholder="Flat, building, area, city, PIN"></textarea><span class="hint">The form needs the address and mobile of at least one passenger.</span></div>
+    </fieldset>
+
+    <fieldset>
+      <legend><div class="stephead"><span class="num">2</span><div><h2>Your train ticket</h2><p>Copy these from your IRCTC e-ticket.</p></div></div></legend>
+      <div class="row">
+        <div class="f"><label for="pnr">PNR</label><input type="text" id="pnr" class="mono" inputmode="numeric" maxlength="10" placeholder="10 digits"></div>
+        <div class="f"><label for="trainNo">Train number</label><input type="text" id="trainNo" class="mono" inputmode="numeric" maxlength="5" placeholder="e.g. 01179"></div>
+      </div>
+      <div class="f"><label for="trainName">Train name</label><input type="text" id="trainName" placeholder="e.g. LTT Madgaon Special"></div>
+      <div class="row">
+        <div class="f"><label for="from">From station</label><input type="text" id="from" placeholder="LTT – Lokmanya Tilak Terminus"><span class="hint">Code and full name</span></div>
+        <div class="f"><label for="to">To station</label><input type="text" id="to" placeholder="MAO – Madgaon"></div>
+      </div>
+      <div class="row">
+        <div class="f"><label for="doj">Date of journey</label><input type="date" id="doj"></div>
+        <div class="f"><label for="dep">Departure time</label><input type="time" id="dep"></div>
+        <div class="f"><label for="bookStatus">Booking status</label>
+          <select id="bookStatus"><option>Confirmed (CNF)</option><option>RAC</option><option>Waitlisted</option></select></div>
+      </div>
+      <div class="f"><span class="lbl">Coupe or cabin</span>
+        <div class="seg" role="radiogroup" aria-label="Coupe or cabin">
+          <label><input type="radio" name="berths" value="2" checked> 2-berth coupe</label>
+          <label><input type="radio" name="berths" value="4"> 4-berth cabin</label>
+        </div>
+        <span class="hint">Your dog can travel in First AC only if the whole coupe or cabin is on one PNR, so book a ticket for every berth.</span>
+      </div>
+      <div class="f"><span class="lbl">Passengers on this PNR</span>
+        <div class="pax" id="pax"></div>
+        <button type="button" class="link-btn" id="addPax">+ Add passenger</button>
+        <span class="hint" id="paxHint"></span>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend><div class="stephead"><span class="num">3</span><div><h2>Your dog</h2><p>Match these to the vaccination record.</p></div></div></legend>
+      <div class="row">
+        <div class="f"><label for="dogName">Dog's name</label><input type="text" id="dogName" placeholder="e.g. Boggi"></div>
+        <div class="f"><label for="breed">Breed</label><input type="text" id="breed" placeholder="e.g. Indian Pariah (Indie)"></div>
+      </div>
+      <div class="row">
+        <div class="f"><label for="dogAge">Age (years)</label><input type="number" id="dogAge" min="0" max="25" step="0.5" inputmode="decimal"></div>
+        <div class="f"><label for="dogSex">Sex</label><select id="dogSex"><option>Male</option><option>Female</option></select></div>
+        <div class="f"><label for="dogWeight">Weight (kg)</label><input type="number" id="dogWeight" min="0" max="100" step="0.5" inputmode="decimal"></div>
+      </div>
+      <label class="check"><input type="checkbox" id="family" checked><span>Everyone on this PNR is family or travelling together, so no other passenger is affected.</span></label>
+      <details>
+        <summary>Make your case stronger (optional)</summary>
+        <div>
+          <div class="f"><label for="history">Train trips your dog has done before</label><textarea id="history" placeholder="e.g. Mumbai to Bengaluru and back in First AC in September 2026. He stayed calm the whole way."></textarea></div>
+          <div class="f"><label for="other">Any other reason for the coupe</label><textarea id="other" placeholder="e.g. My father is 81 and finds long open-compartment journeys difficult."></textarea><span class="hint">Only write what's true. Each reason becomes its own paragraph in the letter.</span></div>
+        </div>
+      </details>
+    </fieldset>
+
+    <fieldset>
+      <legend><div class="stephead"><span class="num">4</span><div><h2>Which DRM office</h2><p>Usually the division where your train starts. Search "DRM office [city] email" if you're unsure.</p></div></div></legend>
+      <div class="row">
+        <div class="f"><label for="division">Division</label><input type="text" id="division" placeholder="e.g. Mumbai"></div>
+        <div class="f"><label for="railway">Zone</label><input type="text" id="railway" list="zones" placeholder="e.g. Central Railway">
+          <datalist id="zones"><option>Central Railway</option><option>Western Railway</option><option>Konkan Railway</option><option>South Western Railway</option><option>Southern Railway</option><option>South Central Railway</option><option>Northern Railway</option><option>Eastern Railway</option><option>South Eastern Railway</option><option>North Western Railway</option><option>West Central Railway</option><option>East Coast Railway</option><option>Northeast Frontier Railway</option></datalist></div>
+      </div>
+      <div class="f"><label for="office">Office address</label><textarea id="office" placeholder="e.g. DRM Office, Chhatrapati Shivaji Maharaj Terminus, Mumbai – 400001"></textarea></div>
+      <div class="f"><label for="drmEmail">DRM office email</label><input type="email" id="drmEmail" placeholder="e.g. drm@bb.railnet.gov.in"><span class="hint">Used only to address the email. Check it on the zone's website.</span></div>
+      <details>
+        <summary>Pass, PTO or cancer patient? (most people skip this)</summary>
+        <div>
+          <label class="check"><input type="checkbox" id="agPass"><span>Against a Pass</span></label>
+          <label class="check"><input type="checkbox" id="agPto"><span>Against a PTO</span></label>
+          <label class="check"><input type="checkbox" id="agCancer"><span>Cancer patient (the form is then addressed to ACM (Res))</span></label>
+        </div>
+      </details>
+    </fieldset>
+
+    <fieldset>
+      <legend><div class="stephead"><span class="num">5</span><div><h2>Print, sign and attach</h2><p>The page doesn't ask for your documents. Keep photocopies of these ready.</p></div></div></legend>
+      <ul class="attach">
+        <li><b>E-ticket</b> showing your PNR</li>
+        <li><b>Vaccination record</b> of your dog</li>
+        <li><b>Fitness certificate</b> from a vet</li>
+        <li><b>Photo ID</b> of one passenger, such as Aadhaar</li>
+      </ul>
+      <p class="hint" style="margin:0">Email the letter with these attached as photos or PDFs. Sign the printed Emergency Quota form by hand and staple the copies to it.</p>
+    </fieldset>
+  </form>
+
+  <aside>
+    <div class="stub" aria-live="polite">
+      <div class="stub-top"><span>Coupe request</span><span id="sClass">1A · 2-berth</span></div>
+      <div class="stub-body">
+        <div class="route"><span id="sFrom">FROM</span><span class="arrow" aria-hidden="true">→</span><span id="sTo">TO</span></div>
+        <div class="meta">
+          <div><small>PNR</small><b id="sPnr">——————————</b></div>
+          <div><small>Train</small><b id="sTrain">—————</b></div>
+          <div><small>Journey</small><b id="sDate">—</b></div>
+          <div><small>Dog</small><b id="sDog">—</b></div>
+        </div>
+        <div class="perf"></div>
+        <div class="deadline" id="deadline"><strong>Pick your journey date</strong>We'll show when the Emergency Quota form has to reach the DRM office.</div>
+        <div class="dl">
+          <button type="button" class="btn" id="genLetter"><span>Download coupe request letter<small>PDF · email this to the DRM</small></span><span aria-hidden="true">↓</span></button>
+          <button type="button" class="btn" id="genEq"><span>Download Emergency Quota form<small>PDF · print, sign, drop at the office</small></span><span aria-hidden="true">↓</span></button>
+        </div>
+        <div class="status" id="status" role="status"></div>
+      </div>
+    </div>
+
+    <div class="emailcard" id="emailCard">
+      <h3>The email to send</h3>
+      <div><span class="hint">To</span><div class="addr" id="eTo">Add the DRM office email in step 4</div></div>
+      <div><span class="hint">Subject</span><div id="eSubj" style="font-weight:600;font-size:14px"></div></div>
+      <pre id="eBody"></pre>
+      <div class="copyrow">
+        <button type="button" class="small-btn" id="copySubj">Copy subject</button>
+        <button type="button" class="small-btn" id="copyBody">Copy email</button>
+        <a class="small-btn" id="mailto" href="#">Open in email app</a>
+      </div>
+      <span class="hint">Attach the letter PDF yourself before you send.</span>
+    </div>
+
+    <div class="tips">
+      <h3>Before you submit</h3>
+      <ol>
+        <li>Email the letter to the DRM as soon as your ticket is booked.</li>
+        <li>Drop the signed Emergency Quota form, with copies of your documents, at the DRM office at least one day before the journey.</li>
+        <li>Carry the vaccination record and the vet's fitness certificate on the train.</li>
+        <li>Book your dog's luggage ticket online at <a href="https://parcel.indianrail.gov.in/LTBook/" target="_blank" rel="noopener">parcel.indianrail.gov.in</a> as soon as your coupe is allotted. Don't leave it to the last minute. If you forget, you won't be taken off the train since you have the coupe, but the fine is about 6 times the luggage ticket.</li>
+        <li>Rules change. Check with the station if anything here looks different.</li>
+      </ol>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Made by <a href="https://www.instagram.com/into.dog.travel/" target="_blank" rel="noopener">@into.dog.travel</a> to make pet travel more accessible in India. Free, always.</span>
+    <span>This page doesn't collect or store anything you type.</span>
+    <span>Information only, not official or legal advice. Indian Railways decides every coupe allotment.</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const STORE = "idt-coupe-kit-v1";
+const FIELDS = ["name","mobile","email","address","pnr","trainNo","trainName","from","to","doj","dep","bookStatus",
+  "dogName","breed","dogAge","dogSex","dogWeight","family","history","other","division","railway","office","drmEmail",
+  "agPass","agPto","agCancer"];
+let passengers = [{name:"",age:"",gender:"M"},{name:"",age:"",gender:"M"}];
+
+/* ---------- helpers ---------- */
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+function parseDate(v){ if(!v) return null; const [y,m,d]=v.split("-").map(Number); if(!y||!m||!d) return null; return new Date(y,m-1,d); }
+const fmtLong = d => `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+const fmtDots = d => `${String(d.getDate()).padStart(2,"0")}.${String(d.getMonth()+1).padStart(2,"0")}.${d.getFullYear()}`;
+const fmtEq = d => `${String(d.getDate()).padStart(2,"0")}-${MONTHS[d.getMonth()].slice(0,3)}-${d.getFullYear()}`;
+const fmtDay = d => d.toLocaleDateString("en-IN",{weekday:"long", day:"numeric", month:"long"});
+const digits = s => (s||"").replace(/\D/g,"");
+function phone(s){ let d=digits(s); if(d.length===12 && d.startsWith("91")) d=d.slice(2); if(d.length===11 && d.startsWith("0")) d=d.slice(1); return d; }
+const words = {2:"two",4:"four"};
+const clean = s => (s||"").replace(/[‘’]/g,"'").replace(/[“”]/g,'"').replace(/\s+\n/g,"\n").trim();
+
+function read(){
+  const s={};
+  for(const k of FIELDS){ const el=$(k); s[k] = el.type==="checkbox" ? el.checked : el.value; }
+  s.berths = document.querySelector('input[name=berths]:checked').value;
+  s.passengers = passengers.map(p=>({...p}));
+  return s;
+}
+function write(s){
+  for(const k of FIELDS){ if(!(k in s)) continue; const el=$(k); if(el.type==="checkbox") el.checked=!!s[k]; else el.value=s[k]; }
+  if(s.berths){ const r=document.querySelector(`input[name=berths][value="${s.berths}"]`); if(r) r.checked=true; }
+  if(Array.isArray(s.passengers) && s.passengers.length) passengers=s.passengers;
+  renderPax();
+}
+try{ localStorage.removeItem(STORE); }catch(e){}
+
+/* ---------- passengers ---------- */
+function renderPax(){
+  const box=$("pax"); box.innerHTML="";
+  passengers.forEach((p,i)=>{
+    const row=document.createElement("div"); row.className="paxrow";
+    row.innerHTML=`<div class="f"><label for="pn${i}">Name ${i+1}</label><input type="text" id="pn${i}" value=""></div>
+      <div class="f"><label for="pa${i}">Age</label><input type="number" id="pa${i}" min="0" max="120" inputmode="numeric"></div>
+      <div class="f"><label for="pg${i}">Gender</label><select id="pg${i}"><option value="M">Male</option><option value="F">Female</option><option value="T">Other</option></select></div>
+      <button type="button" class="icon-btn" aria-label="Remove passenger ${i+1}">×</button>`;
+    box.appendChild(row);
+    const n=row.querySelector(`#pn${i}`), a=row.querySelector(`#pa${i}`), g=row.querySelector(`#pg${i}`);
+    n.value=p.name||""; a.value=p.age||""; g.value=p.gender||"M";
+    n.addEventListener("input",()=>{p.name=n.value;changed();});
+    a.addEventListener("input",()=>{p.age=a.value;changed();});
+    g.addEventListener("change",()=>{p.gender=g.value;changed();});
+    row.querySelector("button").addEventListener("click",()=>{ if(passengers.length>1){passengers.splice(i,1);renderPax();changed();} });
+  });
+  $("addPax").hidden = passengers.length>=6;
+}
+$("addPax").addEventListener("click",()=>{ passengers.push({name:"",age:"",gender:"M"}); renderPax(); changed(); });
+
+/* ---------- derived text ---------- */
+function model(){
+  const s=read(); const d=parseDate(s.doj); const n=Number(s.berths);
+  const pax=s.passengers.filter(p=>p.name.trim());
+  const g = {M:"M",F:"F",T:"Other"};
+  const paxStr = pax.map(p=>`${p.name.trim()} (${p.age||"–"}, ${g[p.gender]||p.gender})`).join("; ");
+  const train = [digits(s.trainNo), s.trainName.trim()].filter(Boolean).join(" / ");
+  const subj = `Request for allotment of a ${n}-berth ${n===4?"cabin":"coupe"} in First AC against PNR ${digits(s.pnr)||"__________"} for travel with a pet dog on Train ${digits(s.trainNo)||"_____"}, ${d?fmtDots(d):"__.__.____"}`;
+  return {s,d,n,pax,paxStr,train,subj,mobile:phone(s.mobile), unit:n===4?"4-berth cabin":"2-berth coupe"};
+}
+
+function emailText(m){
+  const {s,d,n}=m; const prev = d? new Date(d.getFullYear(),d.getMonth(),d.getDate()-1):null;
+  const att = ["Coupe request letter","E-ticket","Pet vaccination record","Pet fitness certificate","Photo ID proof (Aadhaar)"];
+  const name=s.name.trim()||"[Your name]";
+  return `Respected Sir/Madam,
+
+Please find attached my request for allotment of a ${m.unit} in First AC against PNR ${digits(s.pnr)||"[PNR]"}, Train No. ${m.train||"[train]"}, from ${s.from.trim()||"[from]"} to ${s.to.trim()||"[to]"} on ${d?fmtLong(d):"[date]"}. I will be travelling with my pet dog${s.dogName.trim()?`, ${s.dogName.trim()}`:""}.
+
+Attached:
+${att.map(a=>"- "+a).join("\n")}
+
+I will also drop the Emergency Quota application with hard copies of these documents at your office${prev?` by ${fmtLong(prev)}`:""}.
+
+Kindly intimate the allotment on +91 ${m.mobile||"[mobile]"} or this email address.
+
+Thanking you,
+${name}
++91 ${m.mobile||"[mobile]"}`;
+}
+
+/* ---------- live panel ---------- */
+function code(st){ const t=(st||"").trim(); if(!t) return ""; const c=t.split(/[\s–\-—]/)[0]; return c.length<=5?c.toUpperCase():t.slice(0,10); }
+function changed(){
+  const m=model(), {s,d}=m;
+  $("sFrom").textContent=code(s.from)||"FROM"; $("sTo").textContent=code(s.to)||"TO";
+  $("sPnr").textContent=digits(s.pnr)||"——————————"; $("sTrain").textContent=digits(s.trainNo)||"—————";
+  $("sDate").textContent=d? fmtEq(d):"—"; $("sDog").textContent=s.dogName.trim()||"—";
+  $("sClass").textContent=`1A · ${m.unit}`;
+  // passengers vs berths
+  const np=m.pax.length; $("paxHint").textContent = np && np!==m.n ? `You've listed ${np} passenger${np>1?"s":""} for a ${m.unit}. Railways usually need a ticket for every berth.` : "";
+  // deadline
+  const dl=$("deadline"); dl.classList.remove("late");
+  if(!d){ dl.innerHTML="<strong>Pick your journey date</strong>We'll show when the Emergency Quota form has to reach the DRM office."; }
+  else{
+    const today=new Date(); today.setHours(0,0,0,0);
+    const by=new Date(d.getFullYear(),d.getMonth(),d.getDate()-1);
+    const left=Math.round((by-today)/864e5);
+    if(d<today){ dl.innerHTML="<strong>This date has passed</strong>Check the journey date in step 2."; }
+    else if(left<0){ dl.classList.add("late"); dl.innerHTML="<strong>You're past the usual deadline</strong>The Emergency Quota form normally reaches the DRM office a day before the journey. Call or visit the station reservation office today."; }
+    else{ dl.innerHTML=`<strong>Drop the form by ${fmtDay(by)}</strong>${left===0?"That's today.":left===1?"That's tomorrow.":`${left} days from today.`} Email the letter as early as you can.`; }
+  }
+  // email
+  $("eTo").textContent = s.drmEmail.trim() || "Add the DRM office email in step 4";
+  $("eSubj").textContent = m.subj; $("eBody").textContent = emailText(m);
+  $("mailto").href = `mailto:${encodeURIComponent(s.drmEmail.trim())}?subject=${encodeURIComponent(m.subj)}&body=${encodeURIComponent(emailText(m))}`;
+}
+document.getElementById("kit").addEventListener("input",e=>{ if(!e.target.closest(".pax")) changed(); });
+document.getElementById("kit").addEventListener("change",changed);
+document.getElementById("kit").addEventListener("submit",e=>e.preventDefault());
+
+async function copy(text,btn){
+  const old=btn.textContent;
+  try{ await navigator.clipboard.writeText(text); btn.textContent="Copied"; }
+  catch(e){ const r=document.createRange(); r.selectNodeContents($("eBody")); const sel=getSelection(); sel.removeAllRanges(); sel.addRange(r); btn.textContent="Selected, press copy"; }
+  setTimeout(()=>btn.textContent=old,1600);
+}
+$("copySubj").addEventListener("click",e=>copy(model().subj,e.currentTarget));
+$("copyBody").addEventListener("click",e=>copy(emailText(model()),e.currentTarget));
+
+/* ---------- validation ---------- */
+function problems(m,forEq){
+  const {s,d}=m, p=[];
+  if(!s.name.trim()) p.push(["name","your full name"]);
+  if(m.mobile.length!==10) p.push(["mobile","a 10-digit mobile number"]);
+  if(!s.address.trim()) p.push(["address","your address"]);
+  if(digits(s.pnr).length!==10) p.push(["pnr","the 10-digit PNR"]);
+  if(digits(s.trainNo).length!==5) p.push(["trainNo","the 5-digit train number"]);
+  if(!s.from.trim()) p.push(["from","the from station"]);
+  if(!s.to.trim()) p.push(["to","the to station"]);
+  if(!d) p.push(["doj","the date of journey"]);
+  if(!m.pax.length) p.push(["pn0","at least one passenger"]);
+  if(!forEq){
+    if(!s.dogName.trim()) p.push(["dogName","your dog's name"]);
+    if(!s.division.trim()) p.push(["division","the DRM division"]);
+  }
+  return p;
+}
+function showProblems(p){
+  document.querySelectorAll("[aria-invalid]").forEach(el=>el.removeAttribute("aria-invalid"));
+  p.forEach(([id])=>{ const el=$(id); if(el) el.setAttribute("aria-invalid","true"); });
+  const st=$("status"); st.className="status err";
+  st.innerHTML = "Add these first:<ul class='missing'>"+p.map(([id,t])=>`<li><a href="#${id}" data-f="${id}">${t}</a></li>`).join("")+"</ul>";
+  st.querySelectorAll("a").forEach(a=>a.addEventListener("click",e=>{e.preventDefault(); const el=$(a.dataset.f); if(el){el.scrollIntoView({block:"center",behavior:"smooth"}); el.focus({preventScroll:true});}}));
+}
+
+/* ---------- PDF writer ---------- */
+function writer(doc){
+  const M=20, W=170, BOTTOM=282; let y=18;
+  const lh = s => s*0.3528*1.38;
+  const font=(bold,italic)=>doc.setFont("helvetica", bold&&italic?"bolditalic":bold?"bold":italic?"italic":"normal");
+  const api={
+    M,W,
+    get y(){return y}, set y(v){y=v},
+    ensure(h){ if(y+h>BOTTOM){ doc.addPage(); y=20; } },
+    gap(h){ y+=h; },
+    text(str,o={}){
+      const size=o.size||10.5, indent=o.indent||0; if(o.keep) api.ensure(o.keep); font(o.bold,o.italic); doc.setFontSize(size);
+      doc.setTextColor(...(o.color||[20,20,20]));
+      const paras=String(str).split("\n");
+      for(const para of paras){
+        const lines = para ? doc.splitTextToSize(para, (o.width||W)-indent) : [""];
+        for(const ln of lines){ api.ensure(lh(size)); doc.text(ln, o.align==="center"?M+W/2:o.align==="right"?M+W:M+indent, y+lh(size)*0.78, {align:o.align||"left"}); y+=lh(size); }
+      }
+      y += (o.after==null?2.2:o.after);
+    },
+    list(items,o={}){
+      const size=o.size||10.5, ind=o.indent||6; font(false,false); doc.setFontSize(size);
+      items.forEach((it,i)=>{
+        const mark = o.roman ? ["i","ii","iii","iv","v","vi","vii"][i]+"." : (i+1)+".";
+        const lines=doc.splitTextToSize(it, W-ind-7);
+        api.ensure(lh(size)*lines.length);
+        doc.text(mark, M+ind, y+lh(size)*0.78);
+        lines.forEach(ln=>{ doc.text(ln, M+ind+7, y+lh(size)*0.78); y+=lh(size); });
+        y+=1.2;
+      });
+      y+=1.5;
+    },
+    table(rows,o={}){
+      const size=o.size||10, LW=o.labelW||50, pad=2.4, L=lh(size);
+      rows.forEach(([label,value,note])=>{
+        doc.setFontSize(size);
+        font(false,false); const ll=doc.splitTextToSize(label, LW-pad*2);
+        font(true,false); const vl=doc.splitTextToSize(value||" ", W-LW-pad*2);
+        let nl=[]; if(note){ font(false,true); doc.setFontSize(size-1.5); nl=doc.splitTextToSize(note, W-LW-pad*2); doc.setFontSize(size); }
+        const h=Math.max(ll.length, vl.length + nl.length*0.9)*L + pad*2;
+        api.ensure(h);
+        doc.setDrawColor(150,150,150); doc.setLineWidth(0.25);
+        doc.setFillColor(240,240,236); doc.rect(M,y,LW,h,"FD"); doc.rect(M+LW,y,W-LW,h,"S");
+        font(false,false); doc.setTextColor(40,40,40); ll.forEach((t,i)=>doc.text(t, M+pad, y+pad+L*(i+0.78)));
+        font(true,false); doc.setTextColor(15,15,15); vl.forEach((t,i)=>doc.text(t, M+LW+pad, y+pad+L*(i+0.78)));
+        if(nl.length){ font(false,true); doc.setFontSize(size-1.5); doc.setTextColor(90,90,90); nl.forEach((t,i)=>doc.text(t, M+LW+pad, y+pad+L*(vl.length+i*0.9+0.78))); }
+        y+=h;
+      });
+      doc.setTextColor(20,20,20);
+      y+=4;
+    },
+    box(x,yy,checked){ doc.setDrawColor(40,40,40); doc.setLineWidth(0.3); doc.rect(x,yy,3.6,3.6); if(checked){ doc.setLineWidth(0.5); doc.line(x+0.7,yy+1.9,x+1.6,yy+2.9); doc.line(x+1.6,yy+2.9,x+3.0,yy+0.7);} },
+    sign(sig, o={}){
+      const h=o.h||16; api.ensure(h+2);
+      if(sig){ const sw=Math.min(o.maxW||55, h*sig.ratio), sh=sw/sig.ratio; doc.addImage(sig.url,sig.fmt||"PNG",M+(o.x||0),y+(h-sh),sw,sh); }
+      y+=h+1;
+    }
+  };
+  return api;
+}
+
+function buildLetter(m){
+  const {jsPDF}=window.jspdf; const doc=new jsPDF({unit:"mm",format:"a4"}); const w=writer(doc); const {s,d}=m;
+  const today=new Date();
+  const contact = [`Mobile: +91 ${m.mobile}`, s.email.trim()?`Email: ${s.email.trim()}`:""].filter(Boolean).join("  |  ");
+  w.text(s.name.trim(), {bold:true, size:12, after:0.5});
+  w.text(clean(s.address).replace(/\n+/g,", "), {size:10, after:0.5});
+  w.text(contact, {size:10, after:4});
+  w.text(`Date: ${fmtLong(today)}`, {after:5});
+  w.text("To,", {after:0.5});
+  w.text("The Divisional Railway Manager", {after:0.5});
+  w.text([s.division.trim()? `${s.division.trim()} Division`:"", s.railway.trim()].filter(Boolean).join(", "), {after:0.5});
+  if(s.office.trim()) w.text(clean(s.office), {after:0.5});
+  w.gap(4);
+  w.text(`Subject: ${m.subj}`, {bold:true, after:5});
+  w.text("Respected Sir/Madam,", {after:3});
+  const bw = words[m.n]||String(m.n);
+  w.text(`I have booked ${bw} First AC berths on Train No. ${m.train} from ${s.from.trim()} to ${s.to.trim()} on ${fmtLong(d)} under a single PNR. The booking details are given below.`, {after:4});
+  const rows=[
+    ["PNR Number", digits(s.pnr)],
+    ["Train", m.train],
+    ["Date of Journey", fmtLong(d)],
+    ["Class", "First AC (1A)"],
+    ["From / To", `${s.from.trim()} - ${s.to.trim()}`],
+  ];
+  if(s.dep) rows.push(["Scheduled Departure", `${s.dep} hrs`]);
+  rows.push(["Passengers", m.paxStr], ["Current Status", s.bookStatus], ["Contact", `+91 ${m.mobile}${s.email.trim()?"  |  "+s.email.trim():""}`]);
+  w.table(rows);
+  w.text(`I request the allotment of a ${m.unit} against this PNR, on the following grounds.`, {after:4});
+  w.text("Travel with a pet dog", {bold:true, after:1.5, keep:30});
+  w.text("I intend to travel with my pet dog. As per Indian Railways rules, a dog accompanied by its owner may be carried in First AC only when an entire 2-berth coupe or 4-berth cabin is allotted against a single PNR.", {after:2.5});
+  const dog=[`Name: ${s.dogName.trim()}`, s.breed.trim()&&`Breed: ${s.breed.trim()}`, s.dogAge&&`Age: ${s.dogAge} years`, s.dogSex&&`Sex: ${s.dogSex}`, s.dogWeight&&`Approx. weight: ${s.dogWeight} kg`].filter(Boolean).join("    ");
+  w.text(dog, {bold:true, size:10, after:2.5});
+  if(s.history.trim()) w.text(`My dog has travelled with me by train before: ${clean(s.history).replace(/\n+/g," ").replace(/\.?$/,".")} I am confident of keeping the journey comfortable for the railway staff and other passengers.`, {after:2.5});
+  if(s.family) w.text("All berths on this PNR are booked within my own family, and no other passenger will be inconvenienced by the allotment of a coupe.", {after:3});
+  if(s.other.trim()){
+    w.text("Other grounds", {bold:true, after:1.5, keep:22});
+    clean(s.other).split(/\n+/).forEach(p=>w.text(p, {after:2.5}));
+    w.gap(0.5);
+  }
+  w.text("I undertake the following:", {after:2, keep:30});
+  w.list([
+    "The dog will be kept muzzled and on a chain/leash whenever outside the coupe.",
+    "A valid veterinary fitness certificate and current vaccination records will be carried and produced on demand.",
+    "The prescribed luggage freight for the pet will be paid and the luggage ticket obtained before departure.",
+    "Full responsibility for the conduct of the animal and for any damage or cleaning required will be borne by me.",
+    "All instructions of the railway staff and the TTE will be complied with."
+  ]);
+  w.text("I shall be grateful for your kind consideration. Please intimate the allotment on the mobile number and email given above.", {after:4});
+  w.text("Thanking you,", {after:0.5});
+  w.text("Yours faithfully,", {after:2});
+  w.sign(m.sig,{h:17});
+  w.text(`(${s.name.trim()})`, {after:0.5});
+  w.text(`Mobile: +91 ${m.mobile}`, {after:5});
+  w.text("Enclosures:", {bold:true, after:1.5, keep:30});
+  w.list([`Copy of e-ticket / booking confirmation (PNR ${digits(s.pnr)})`, "Copy of pet vaccination record", "Copy of pet fitness certificate", "Copy of photo ID proof (Aadhaar)"]);
+  return doc;
+}
+
+function buildEq(m){
+  const {jsPDF}=window.jspdf; const doc=new jsPDF({unit:"mm",format:"a4"}); const w=writer(doc); const {s,d}=m;
+  w.text((s.railway.trim()||"Indian Railways").toUpperCase(), {bold:true, size:15, align:"center", after:1});
+  w.text("DRM's Office", {align:"center", after:0.5});
+  if(s.office.trim()) w.text(clean(s.office).replace(/\n+/g,", "), {align:"center", size:10, after:4}); else w.gap(4);
+  w.text("Emergency Quota Application", {bold:true, size:13, align:"center", after:6});
+  // application against
+  const y0=w.y; doc.setFont("helvetica","bold"); doc.setFontSize(10.5); doc.text("Application against:", w.M, y0+3.2);
+  let x=w.M+40; [["Pass",s.agPass],["PTO",s.agPto],["Cancer patient",s.agCancer]].forEach(([t,c])=>{ w.box(x,y0+0.2,c); doc.setFont("helvetica","normal"); doc.text(t,x+5.5,y0+3.2); x+=5.5+doc.getTextWidth(t)+9; });
+  w.y=y0+9;
+  w.text("To,", {after:0.5});
+  w.text(s.agCancer? "ACM (Res)" : "DRM (Res)", {bold:true, after:4});
+  const pax0 = m.pax[0];
+  w.table([
+    ["Name of Passenger", m.pax.map(p=>p.name.trim()).join(", ")],
+    ["Mobile No.", `+91 ${m.mobile}`],
+    ["Train No.", m.train],
+    ["Date of Journey", fmtEq(d)],
+    ["No. of Berths / Seats", String(m.pax.length || m.n)],
+    ["Class", "First AC (1A)"],
+    ["Station", `From: ${s.from.trim()}    To: ${s.to.trim()}`],
+    ["PNR", digits(s.pnr)]
+  ],{labelW:52});
+  w.text("Applicant Details", {bold:true, after:2});
+  w.table([["Name", s.name.trim()], ["Address", clean(s.address).replace(/\n+/g,", ")], ["Mobile No.", `+91 ${m.mobile}`]],{labelW:52});
+  w.gap(4);
+  w.sign(m.sig,{h:17});
+  doc.setDrawColor(40,40,40); doc.setLineWidth(0.3); doc.line(w.M, w.y, w.M+70, w.y); w.gap(1.5);
+  w.text("Signature of Applicant", {size:10, after:1});
+  w.text(`Date: ${fmtLong(new Date())}`, {size:10, after:8});
+  w.text("For carrying a pet in First AC (coupe), the following are attached:", {bold:true, after:2});
+  w.list(["Copy of vaccination certificate and fitness certificate of the dog.", "Copy of Aadhaar card of one passenger.", "Copy of the confirmed ticket.", `Copy of the coupe request letter emailed to the DRM.`], {roman:true});
+  return doc;
+}
+
+function download(bytes, name){
+  const blob=new Blob([bytes],{type:"application/pdf"}); const url=URL.createObjectURL(blob);
+  const a=document.createElement("a"); a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 60000);
+}
+
+async function generate(kind, btn){
+  const st=$("status");
+  if(!window.jspdf){ st.className="status err"; st.textContent="The PDF maker didn't load. Check your internet connection and reload the page."; return; }
+  const m=model(); const p=problems(m, kind==="eq");
+  if(p.length){ showProblems(p); return; }
+  document.querySelectorAll("[aria-invalid]").forEach(el=>el.removeAttribute("aria-invalid"));
+  m.sig=null;
+  btn.disabled=true; st.className="status"; st.textContent="Making your PDF…";
+  try{
+    const doc = kind==="eq" ? buildEq(m) : buildLetter(m);
+    const bytes = new Uint8Array(doc.output("arraybuffer"));
+    const pnr=digits(m.s.pnr);
+    download(bytes, kind==="eq" ? `Emergency_Quota_Application_PNR_${pnr}.pdf` : `DRM_Coupe_Request_PNR_${pnr}.pdf`);
+    st.className="status ok";
+    st.textContent = (kind==="eq" ? "Emergency Quota form downloaded. Print it, sign it and drop it at the DRM office." : "Letter downloaded. Attach it to the email below with your documents.");
+  }catch(e){
+    console.error(e); st.className="status err"; st.textContent="Something went wrong making the PDF. Reload the page and try again.";
+  }finally{ btn.disabled=false; }
+}
+$("genLetter").addEventListener("click",e=>generate("letter",e.currentTarget));
+$("genEq").addEventListener("click",e=>generate("eq",e.currentTarget));
+
+/* ---------- sample ---------- */
+$("sampleBtn").addEventListener("click",()=>{
+  const d=new Date(); d.setDate(d.getDate()+10);
+  const iso=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  write({name:"Asha Rao (sample)", mobile:"9800000000", email:"asha.sample@example.com", address:"Flat 4, Sample Apartments, Bandra West, Mumbai 400050",
+    pnr:"1234567890", trainNo:"01179", trainName:"LTT Madgaon Special", from:"LTT – Lokmanya Tilak Terminus", to:"MAO – Madgaon", doj:iso, dep:"08:20", bookStatus:"Confirmed (CNF)",
+    dogName:"Bruno", breed:"Indian Pariah (Indie)", dogAge:"3", dogSex:"Male", dogWeight:"18", family:true,
+    history:"Mumbai to Pune and back by train in 2026. He stayed calm the whole way", other:"",
+    division:"Mumbai", railway:"Central Railway", office:"DRM Office, Chhatrapati Shivaji Maharaj Terminus, Mumbai – 400001", drmEmail:"drm@bb.railnet.gov.in",
+    agPass:false, agPto:false, agCancer:false, berths:"2",
+    passengers:[{name:"Asha Rao",age:"34",gender:"F"},{name:"Vikram Rao",age:"36",gender:"M"}]});
+  changed();
+  $("status").className="status"; $("status").textContent="Sample details filled in. Replace them with yours before you download.";
+});
+
+/* ---------- boot ---------- */
+renderPax(); changed();
+})();
+</script>
+</body>
+</html>
